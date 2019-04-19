@@ -1,4 +1,4 @@
-# liveboard_free-for-nagiosxi
+# Liveboard_free for NagiosXI
 LiveBoard™ is a real-time alerts dashboard for Nagios XI. This dashboard will display non-OK states of nagios check results.
 
 LiveBoard is urgency aware. Convenient, because urgent problems are always on top. You may have several LiveBoards running throughout your organisation there are separate views for each team based on authorisation.
