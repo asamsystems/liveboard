@@ -12,7 +12,7 @@ Start a terminal to the Nagios XI server
 Login as root (sudo may not work)
 
 Download script start_liveboard-free.sh 
-(eg. wget 
+(eg. wget github.com/asamsystems/liveboard_free-for-nagiosxi/raw/master/start_liveboard-free.sh)
 
 Run script with command: sh start_liveboard-free.sh
 
