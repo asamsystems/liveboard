@@ -1,4 +1,4 @@
-#!/bin/bash - 
+#!/bin/bash -
 
 XI_INC="/usr/local/nagiosxi/html/config.inc.php"
 MENUFILE="/usr/local/nagiosxi/html/includes/utils-menu.inc.php"
@@ -21,13 +21,12 @@ echo
 echo
 echo "                LiveBoard for Nagios XI"
 echo "               ========================="
-echo
 echo "Starting installation of LiveBoard Free Edition for Nagios XI"
+echo
 echo "This script will install and take several steps to make LiveBoard work."
 echo "Run this script again to uninstall/reinstall the LiveBoard container"
-echo "or to select another option"
-echo "URL to LiveBoard after install is ready: "
-echo "   https://<nagiosxi host>/nagiosxi/liveboard"
+echo "or to select other option"
+echo "LiveBoard URL after install: https://<nagiosxi host>/nagiosxi/liveboard"
 echo
 echo "-----------------------------------------------------------------------"
 echo
@@ -35,7 +34,7 @@ read -p "Enter to continue or Ctrl-C to abort" X
 echo
 echo
 echo "Checking if docker is installed: "
-docker -v
+docker version --format '{{.Server.Version}}'
 STATUS=$?
 echo
 if [ $STATUS -ne 0 ]; then
@@ -43,8 +42,12 @@ if [ $STATUS -ne 0 ]; then
   echo "Do you want me to install it?"
   echo "Access to your OS packages repo (internet) will be required"
   read -p "Install (Y or n): " INST
-  if [ $INST -eq 'Y' ]; then
-    yum -y -q install docker-ce
+  if [ $INST = 'Y' ]; then
+    yum install -y yum-utils
+    yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+    yum install -y docker-ce
     STATUS=$?
     if [ $STATUS -ne 0 ]; then
       echo "Installing $EDITION Edition failed."
@@ -196,7 +199,7 @@ echo "4) Skip, $CONF already exists
    with IP $IP in it"
 echo "5) Add LiveBoard to the Quick View menu
    (may need repeating after a Nagios XI update)"
-echo "6) Remove LiveBoard form menu"
+echo "6) Remove LiveBoard from menu"
 echo "D) Stop and delete container immedialely, do not verify"
 echo
 read -p "Option: " opt
@@ -260,6 +263,7 @@ esac
 
 echo "Done..."
 echo
+echo "Run this script again to select other options"
 echo "URL to LiveBoard: https://<nagiosxi host>/nagiosxi/liveboard"
 echo
 echo
