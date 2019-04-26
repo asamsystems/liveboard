@@ -199,7 +199,7 @@ echo "4) Skip, $CONF already exists
    with IP $IP in it"
 echo "5) Add LiveBoard to the Quick View menu
    (may need repeating after a Nagios XI update)"
-echo "6) Remove LiveBoard from menu"
+echo "6) Remove LiveBoard from the Quick View menu"
 echo "D) Stop and delete container immedialely"
 echo "C) Clean all (To re-install run this script again)"
 echo
