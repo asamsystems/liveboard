@@ -26,7 +26,7 @@ echo
 echo "This script will install and take several steps to make LiveBoard work."
 echo "Run this script again to uninstall/reinstall the LiveBoard container"
 echo "or to select other option"
-echo "LiveBoard URL after install: https://<nagiosxi host>/nagiosxi/liveboard"
+echo "LiveBoard URL: https://<nagiosxi host>/asam/liveboard"
 echo
 echo "-----------------------------------------------------------------------"
 echo
@@ -183,8 +183,8 @@ echo "Container IP: $IP";
 echo
 
 echo "#---
-ProxyPass        /nagiosxi/liveboard http://$IP:$PORT/asam/liveboard retry=0 disablereuse=On
-ProxyPassReverse /nagiosxi/liveboard http://$IP:$PORT/asam/liveboard
+ProxyPass        /asam/liveboard http://$IP:$PORT/asam/liveboard retry=0 disablereuse=On
+ProxyPassReverse /asam/liveboard http://$IP:$PORT/asam/liveboard
 #---" > $TMPCONF
 echo
 echo
@@ -193,14 +193,15 @@ echo "This file needs to be added to the Apache config"
 echo
 echo "Pick an option and hit Enter"
 echo "1) Copy file to $CONF, I will restart Apache manually"
-echo "2) Copy file to $CONF and restart Apache"
-echo "3) Skip, I will copy file and restart Apache manually"
+echo "2) Copy file to $CONF & restart Apache"
+echo "3) Skip, I will copy conf file & restart Apache manually"
 echo "4) Skip, $CONF already exists
    with IP $IP in it"
 echo "5) Add LiveBoard to the Quick View menu
    (may need repeating after a Nagios XI update)"
 echo "6) Remove LiveBoard from menu"
-echo "D) Stop and delete container immedialely, do not verify"
+echo "D) Stop and delete container immedialely"
+echo "C) Clean all (To re-install run this script again)"
 echo
 read -p "Option: " opt
 case $opt in
@@ -234,7 +235,7 @@ case $opt in
   "5") /bin/grep liveboard $MENUFILE > /dev/null 2>&1
        STATUS=$?
        if [ $STATUS -ne 0 ]; then
-         sed -i'.bak' "0,/add_menu_item(MENU_HOME, array/ {N; s/add_menu_item(MENU_HOME, array/add_menu_item(MENU_HOME, array('type' => 'link','title' => _('LiveBoard'),'id' => 'menu-home-liveboard','order' => 100.1,'opts' => array('href' => '\/nagiosxi\/liveboard\/','icon' => 'fa-heartbeat')));add_menu_item(MENU_HOME, array('type' => 'linkspacer','order' => 100.2));\n&/}" $MENUFILE;
+         sed -i'.bak' "0,/add_menu_item(MENU_HOME, array/ {N; s/add_menu_item(MENU_HOME, array/add_menu_item(MENU_HOME, array('type' => 'link','title' => _('LiveBoard'),'id' => 'menu-home-liveboard','order' => 100.1,'opts' => array('href' => '\/asam\/liveboard\/','icon' => 'fa-heartbeat')));add_menu_item(MENU_HOME, array('type' => 'linkspacer','order' => 100.2));\n&/}" $MENUFILE;
        fi
        echo
        ;;
@@ -249,12 +250,36 @@ case $opt in
          exit 1;
        fi
        printf "Removing container "
-       docker rm $EDITION
+       docker rm --force $EDITION
        if [ $? -ne 0 ]; then
          echo "Failed to remove container. Exiting..."
          echo
          exit 1;
        fi
+       ;;
+  "C") printf "Stopping container "
+       docker stop -t4 $EDITION
+       if [ $? -ne 0 ]; then
+         echo "Failed to stop container. Exiting..."
+         echo
+         exit 1;
+       fi
+       printf "Removing container "
+       docker rm --force $EDITION
+       if [ $? -ne 0 ]; then
+         echo "Failed to remove container. Exiting..."
+         echo
+         exit 1;
+       fi
+       printf "Deleting image "
+       docker rmi $(docker images --filter "dangling=true" -q) 2>/dev/null
+       docker rmi --force $(docker images --format "{{.ID}} {{.Repository}}"|grep liveboard|awk '{print $1;}')
+       if [ $? -ne 0 ]; then
+         echo "Failed to remove image. Exiting..."
+         echo
+         exit 1;
+       fi
+
        ;;
     *) echo "Invalid key..."
        exit 1
@@ -264,6 +289,7 @@ esac
 echo "Done..."
 echo
 echo "Run this script again to select other options"
-echo "URL to LiveBoard: https://<nagiosxi host>/nagiosxi/liveboard"
+echo "LiveBoard URL: https://<nagiosxi host>/asam/liveboard"
 echo
 echo
+
