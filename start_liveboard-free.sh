@@ -21,11 +21,11 @@ echo
 echo
 echo "                LiveBoard for Nagios XI"
 echo "               ========================="
-echo "Starting installation of LiveBoard Free Edition for Nagios XI"
+echo "Starting installation of LiveBoard NDO Edition for Nagios XI"
 echo
 echo "This script will install and take several steps to make LiveBoard work."
 echo "Run this script again to uninstall/reinstall the LiveBoard container"
-echo "or to select other option"
+echo "or to select other options"
 echo "LiveBoard URL: https://<nagiosxi host>/asam/liveboard"
 echo
 echo "-----------------------------------------------------------------------"
