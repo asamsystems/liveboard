@@ -1,4 +1,9 @@
 #!/bin/bash -
+#<<<
+# Copyright (c), 2019 ASAMSystems.com
+# Contact: devteam@ASAMSystems.com
+#>>>
+
 
 XI_INC="/usr/local/nagiosxi/html/config.inc.php"
 MENUFILE="/usr/local/nagiosxi/html/includes/utils-menu.inc.php"
@@ -28,6 +33,10 @@ echo "Run this script again to uninstall/reinstall the LiveBoard container"
 echo "or to select other options"
 echo "LiveBoard URL: https://<nagiosxi host>/asam/liveboard"
 echo
+echo
+echo
+echo "   Copyright(c) 2019 ASAMSytems.com"
+echo "   Contact: devteam@asamsystems.com"
 echo "-----------------------------------------------------------------------"
 echo
 read -p "Enter to continue or Ctrl-C to abort" X
