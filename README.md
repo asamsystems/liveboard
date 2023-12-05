@@ -11,4 +11,4 @@ Steps to get LiveBoard to work:
 - Download script install_liveboard.pl (eg. wget github.com/asamsystems/liveboard/raw/master/install_liveboard.pl)
 - Run script with command: perl install_liveboard.pl
 
-The script will guide you through the installation process. The script will even download the liveboard docker image for you..
+The script will guide you through the installation process. The script will even download the liveboard docker image for you...
